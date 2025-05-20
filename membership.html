@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registration Form</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #ff758c, #ff7eb3);
+      font-family: 'Poppins', sans-serif;
+    }
+    .container {
+      max-width: 600px;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 50px;
+    }
+    .form-control:focus {
+      border-color: #ff758c;
+      box-shadow: 0 0 5px rgba(255, 117, 140, 0.5);
+    }
+    .btn-primary {
+      background: #ff758c;
+      border: none;
+    }
+    .btn-primary:hover {
+      background: #ff5263;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2 class="text-center mb-4"><i class="bi bi-person-circle"></i> Registration Form</h2>
+    <form class="needs-validation" novalidate>
+      <div class="row mb-3">
+        <div class="col-md-4">
+          <label class="form-label">First Name</label>
+          <input type="text" class="form-control" placeholder="Enter First Name" required pattern="[A-Za-z]{1,30}">
+          <div class="invalid-feedback">First name is required and should only contain letters.</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Middle Name</label>
+          <input type="text" class="form-control" placeholder="Enter Middle Name" pattern="[A-Za-z]{1,30}">
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Last Name</label>
+          <input type="text" class="form-control" placeholder="Enter Last Name" required pattern="[A-Za-z]{1,30}">
+          <div class="invalid-feedback">Last name is required and should only contain letters.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Date of Birth</label>
+        <input type="date" class="form-control" required max="2023-12-31">
+        <div class="invalid-feedback">Please select a valid date.</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select class="form-select" required>
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+        <div class="invalid-feedback">Please select your gender.</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+          <input type="email" class="form-control" placeholder="Enter Email" required>
+          <div class="invalid-feedback">Please enter a valid email address.</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Phone Number</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+          <input type="tel" class="form-control" placeholder="Enter Phone Number" required pattern="^\+?[1-9]\d{1,14}$">
+          <div class="invalid-feedback">Please enter a valid phone number (e.g., +1234567890).</div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Case Type</label>
+        <select class="form-select" required>
+          <option value="">Select Case Type</option>
+          <option value="leather-case">Leather Case</option>
+          <option value="shockproof-case">Shockproof Case</option>
+          <option value="transparent-case">Transparent Case</option>
+        </select>
+        <div class="invalid-feedback">Case Type is required.</div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <textarea class="form-control" rows="3" placeholder="Enter Address" required></textarea>
+        <div class="invalid-feedback">Address is required.</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-6">
+          <label class="form-label">Pincode</label>
+          <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+            <input type="text" class="form-control" placeholder="Enter Pincode" required pattern="\d{6}">
+            <div class="invalid-feedback">Pincode must be a 6-digit number.</div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Country</label>
+          <input type="text" class="form-control" placeholder="Enter Country" required>
+          <div class="invalid-feedback">Country is required.</div>
+        </div>  
+      </div>
+      
+      <!-- Password and Confirm Password -->
+      <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" class="form-control" id="password" placeholder="Enter Password" required pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$">
+        <div class="invalid-feedback">Password must be at least 8 characters long and contain both letters and numbers.</div>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Confirm Password</label>
+        <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password" required>
+        <div class="invalid-feedback">Passwords do not match.</div>
+      </div>
+      
+      <div class="text-center">
+        <a href="buy1.html">
+          <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Register</button>
+        </a>
+        
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // Bootstrap form validation
+    (function () {
+      'use strict'
+      var forms = document.querySelectorAll('.needs-validation')
+      Array.prototype.slice.call(forms).forEach(function (form) {
+        form.addEventListener('submit', function (event) {
+          // Custom validation for password and confirm password
+          var password = document.getElementById('password');
+          var confirmPassword = document.getElementById('confirmPassword');
+          
+          if (password.value !== confirmPassword.value) {
+            confirmPassword.setCustomValidity('Passwords do not match.');
+          } else {
+            confirmPassword.setCustomValidity('');
+          }
+
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      })
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

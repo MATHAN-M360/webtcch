@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CarHub - Manage Cars</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+      background-color: #f5f7fa;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    form, table {
+      margin-top: 20px;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    input {
+      padding: 8px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      margin-right: 5px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+
+    .actions button {
+      background-color: #28a745;
+    }
+
+    .actions .delete {
+      background-color: #dc3545;
+    }
+
+  </style>
+</head>
+<body>
+  <h2>Add New Car</h2>
+  <form id="carForm">
+    <input type="hidden" id="carId" />
+    <label>Company:</label><br>
+    <input type="text" id="company" required><br>
+
+    <label>Model:</label><br>
+    <input type="text" id="model" required><br>
+
+    <label>Price:</label><br>
+    <input type="number" id="price" required><br>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <h2>Car List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Model</th>
+        <th>Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="carTableBody"></tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById('carForm');
+    const carIdInput = document.getElementById('carId');
+    const companyInput = document.getElementById('company');
+    const modelInput = document.getElementById('model');
+    const priceInput = document.getElementById('price');
+    const tableBody = document.getElementById('carTableBody');
+
+    async function fetchCars() {
+      const res = await fetch('/cars');
+      const cars = await res.json();
+      tableBody.innerHTML = '';
+      cars.forEach(car => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${car.company}</td>
+          <td>${car.model}</td>
+          <td>${car.price}</td>
+          <td class="actions">
+            <button onclick="editCar('${car._id}', '${car.company}', '${car.model}', ${car.price})">Edit</button>
+            <button class="delete" onclick="deleteCar('${car._id}')">Delete</button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const data = {
+        company: companyInput.value,
+        model: modelInput.value,
+        price: priceInput.value
+      };
+
+      if (carIdInput.value) {
+        // UPDATE
+        await fetch(`/cars/${carIdInput.value}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      } else {
+        // CREATE
+        await fetch('/cars', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      }
+
+      carIdInput.value = '';
+      form.reset();
+      fetchCars();
+    });
+
+    async function deleteCar(id) {
+      if (confirm('Delete this car?')) {
+        await fetch(`/cars/${id}`, { method: 'DELETE' });
+        fetchCars();
+      }
+    }
+
+    function editCar(id, company, model, price) {
+      carIdInput.value = id;
+      companyInput.value = company;
+      modelInput.value = model;
+      priceInput.value = price;
+    }
+
+    fetchCars();
+  </script>
+</body>
+</html>
